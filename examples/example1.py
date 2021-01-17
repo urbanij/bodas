@@ -1,0 +1,33 @@
+import bodas
+import multiprocessing
+
+
+def proc_func(H):
+    # print(H)
+    tf = Tf(TransferFunction(*sympy.fraction(H), s))
+    tf.plot()
+
+
+def main():
+
+    some_transfer_functions = [
+        ' 100 * (1+s/100)*(1+s/553) / (s * (1+s) * (1+s/823) * (1+s/9822) ) ',
+        '1/(1+s*0.5/1000+s**2/1000**2)',
+        '1/(s**2 * (1+s/9000))', 
+        '0.14*s/(1+s/100)**2',
+        '((1+s/892) * (1-s/12.4))/((231+s)*(42-s))'
+    ]
+    
+    p = []
+    for i in range(len(some_transfer_functions)):
+        p.append( multiprocessing.Process(target=proc_func, args=(some_transfer_functions[i],)) )
+
+    for proc in p:
+        proc.start()
+
+    for proc in p:
+        proc.join()
+
+
+if __name__ == '__main__':
+    main()
