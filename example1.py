@@ -1,10 +1,13 @@
+import sympy
+from sympy.abc import s
+from sympy.physics.control.lti import TransferFunction
 import bodas
-import multiprocessing
 
+import multiprocessing
 
 def proc_func(H):
     # print(H)
-    tf = Tf(TransferFunction(*sympy.fraction(H), s))
+    tf = bodas.Tf(TransferFunction(*sympy.fraction(H), s))
     tf.plot()
 
 
