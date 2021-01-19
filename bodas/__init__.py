@@ -29,8 +29,9 @@ from sympy.physics.control.lti import TransferFunction
 
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (15,9)
+plt.rcParams["figure.figsize"] = (9,10)
 
+from typing import List
 
 NUM_POINTS = 3000
 w = np.logspace(-3, 8, NUM_POINTS)
@@ -42,15 +43,17 @@ class Tf:
         self.tf: TransferFunction = tf
         self.H: str = tf.num / tf.den
         self.H_tf = sympy.lambdify(s, self.H, "numpy")
-        print(f"{self.tf.zeros()=}") # f-string debug variant is a Python3.8 feature 
-        print(f"{self.tf.poles()=}")
+        # print(f"{self.tf.zeros()=}") # f-string debug variant is a Python3.8 feature 
+        # print(f"{self.tf.poles()=}")
         
         # for visualization purposes
-        self._abs_roots = list(map( abs, self.tf.zeros() + self.tf.poles() ))
-        self._min_omega = max(w[0],  min(self._abs_roots)/100)
-        self._max_omega = min(w[-1], max(self._abs_roots)*100)
+        self._abs_roots: List[sympy.core.numbers.Float] = list(map( abs, self.tf.zeros() + self.tf.poles() ))
+        self._min_omega: sympy.core.numbers.Float       = max(w[0],  min(self._abs_roots)/100)
+        self._max_omega: sympy.core.numbers.Float       = min(w[-1], max(self._abs_roots)*100)
 
     def _addSingularityContributionMagPlot(self, omega, singularity_type) -> np.ndarray:
+        """
+        """
         d_sign = {'pole': -1, 'zero': +1} 
         if omega == 0:
             f = d_sign[singularity_type] * 20 * np.log10(w)
@@ -107,13 +110,13 @@ class Tf:
         f = 0 * w
         
         # add shitf correction here
-        init_angle = np.angle(self.H_tf(1j * w), deg=True)[0]
+        init_angle = np.angle(self.H_tf(1j * w), deg=True)[0] # starting angle of the actual bode plot function.
         f += 0 #init_angle
         
         for root in self.tf.zeros(): f += self._addSingularityContributionPhasePlot(complex(root), 'zero', style)
         for root in self.tf.poles(): f += self._addSingularityContributionPhasePlot(complex(root), 'pole', style)
         
-        f += init_angle
+        # f += init_angle
         return f
     
     def plot(self):
