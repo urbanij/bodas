@@ -29,10 +29,11 @@ from sympy.physics.control.lti import TransferFunction
 
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"] = (15,9)
 
 
 NUM_POINTS = 3000
-w = np.logspace(-3, 7, NUM_POINTS)
+w = np.logspace(-3, 8, NUM_POINTS)
 
 
 class Tf:
@@ -43,6 +44,11 @@ class Tf:
         self.H_tf = sympy.lambdify(s, self.H, "numpy")
         print(f"{self.tf.zeros()=}") # f-string debug variant is a Python3.8 feature 
         print(f"{self.tf.poles()=}")
+        
+        # for visualization purposes
+        self._abs_roots = list(map( abs, self.tf.zeros() + self.tf.poles() ))
+        self._min_omega = max(w[0],  min(self._abs_roots)/100)
+        self._max_omega = min(w[-1], max(self._abs_roots)*100)
 
     def _addSingularityContributionMagPlot(self, omega, singularity_type) -> np.ndarray:
         d_sign = {'pole': -1, 'zero': +1} 
@@ -136,9 +142,8 @@ class Tf:
             linestyle="solid",
             linewidth=LINEWIDTH_ASYMP_PLOT)
         
-        
-        plt.ylabel("$|H|$")
-        plt.ylim(min(H_db)-2, max(H_db)+2)
+        plt.xlim(float(self._min_omega), float(self._max_omega))
+        plt.ylabel("Magnitude (dB)")
         plt.grid(True, which='both', color='#9c9b97', linestyle='-.', linewidth=0.2)
         
 
@@ -158,8 +163,9 @@ class Tf:
             linestyle=":",
             linewidth=0.4*LINEWIDTH_ASYMP_PLOT)
         
-        plt.ylabel("$\\angle H$")
-        plt.xlabel('f (Hz)')
+        plt.xlim(float(self._min_omega), float(self._max_omega))
+        plt.ylabel("Phase (deg)")
+        plt.xlabel("$\omega$ (rad/s)")
         plt.grid(True, which='both', color='#9c9b97', linestyle='-.', linewidth=0.2)
         
         plt.show()
