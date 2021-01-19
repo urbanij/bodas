@@ -29,7 +29,6 @@ from sympy.physics.control.lti import TransferFunction
 
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (9,10)
 
 from typing import List
 
@@ -43,8 +42,8 @@ class Tf:
         self.tf: TransferFunction = tf
         self.H: str = tf.num / tf.den
         self.H_tf = sympy.lambdify(s, self.H, "numpy")
-        # print(f"{self.tf.zeros()=}") # f-string debug variant is a Python3.8 feature 
-        # print(f"{self.tf.poles()=}")
+        print(f"{self.tf.zeros()=}") # f-string debug variant is a Python3.8 feature 
+        print(f"{self.tf.poles()=}")
         
         # for visualization purposes
         self._abs_roots: List[sympy.core.numbers.Float] = list(map( abs, self.tf.zeros() + self.tf.poles() ))
@@ -85,16 +84,20 @@ class Tf:
         return f
 
     def _calcLastNonZeroCoefficient(self, poly) -> float:
+        """
+        """
         """ https://docs.sympy.org/latest/modules/polys/reference.html#sympy.polys.polytools.Poly.EC """
         if sympy.degree(poly) > 0:
-            print(f"{sympy.poly(poly)=}")
-            print(f"{sympy.poly(poly).EC()=}")
+            # print(f"{sympy.poly(poly)=}")
+            # print(f"{sympy.poly(poly).EC()=}")
             lnzc = sympy.poly(poly).EC()
         else:
             lnzc = poly
         return lnzc
 
     def _buildMagnitudeAsymptotes(self):
+        """
+        """
         f = 0 * w
 
         # constant
@@ -111,16 +114,17 @@ class Tf:
         
         # add shitf correction here
         init_angle = np.angle(self.H_tf(1j * w), deg=True)[0] # starting angle of the actual bode plot function.
+        print(f"{init_angle=}")
+
         f += 0 #init_angle
         
         for root in self.tf.zeros(): f += self._addSingularityContributionPhasePlot(complex(root), 'zero', style)
         for root in self.tf.poles(): f += self._addSingularityContributionPhasePlot(complex(root), 'pole', style)
-        
-        # f += init_angle
         return f
     
     def plot(self):
-
+        """
+        """
         LINEWIDTH_ACTUAL_PLOT, LINEWIDTH_ASYMP_PLOT = 0.6, 0.8
         
         H = self.H_tf(1j * w)
@@ -131,10 +135,10 @@ class Tf:
         phase_asymptotes_sloped = self._buildPhaseAsymptotes('sloped')
         phase_asymptotes_vertical = self._buildPhaseAsymptotes('vertical')
 
-        plt.figure(1)
+        plt.figure(figsize=(9,8))
         plt.suptitle(f"Bode plot: {self.H}")
 
-        plt.subplot(211)
+        ax1 = plt.subplot(311)
         plt.semilogx(w, H_db, 
             color="blue", 
             linestyle="dashed",
@@ -144,13 +148,20 @@ class Tf:
             color="red", 
             linestyle="solid",
             linewidth=LINEWIDTH_ASYMP_PLOT)
-        
         plt.xlim(float(self._min_omega), float(self._max_omega))
         plt.ylabel("Magnitude (dB)")
-        plt.grid(True, which='both', color='#9c9b97', linestyle='-.', linewidth=0.2)
-        
+        plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
 
-        plt.subplot(212)
+        ax2 = plt.subplot(312, sharex=ax1)
+        plt.scatter(list(map( abs, self.tf.zeros())), [0]*len(self.tf.zeros()), marker='o', facecolors="none", color="red")
+        plt.scatter(list(map( abs, self.tf.poles())), [0]*len(self.tf.poles()), marker='x', color="red")
+        plt.setp(ax1.get_xticklabels(), visible=True)
+        plt.ylim(-5,5)
+        # plt.axes.get_xaxis().set_visible(False)  # remove the x-axis and its ticks
+        ax2.yaxis.set_visible(False)
+        # ax2.set_aspect(.2)
+
+        ax3 = plt.subplot(313)
         plt.semilogx(w, H_phase, 
             color="blue", 
             linestyle="dashed",
@@ -162,15 +173,15 @@ class Tf:
             linewidth=LINEWIDTH_ASYMP_PLOT, 
             label=f'${self.H}$')
         plt.semilogx(w, phase_asymptotes_vertical, 
-            color="black", 
+            color="red", 
             linestyle=":",
-            linewidth=0.4*LINEWIDTH_ASYMP_PLOT)
+            linewidth=0.88*LINEWIDTH_ASYMP_PLOT)
         
         plt.xlim(float(self._min_omega), float(self._max_omega))
         plt.ylabel("Phase (deg)")
         plt.xlabel("$\omega$ (rad/s)")
-        plt.grid(True, which='both', color='#9c9b97', linestyle='-.', linewidth=0.2)
-        
+        plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
+
         plt.show()
 
 
