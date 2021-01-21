@@ -42,7 +42,7 @@ class Tf:
         self.tf: TransferFunction = tf
         self.H: str = tf.num / tf.den
         self.H_tf = sympy.lambdify(s, self.H, "numpy")
-        print(f"{self.tf.zeros()=}") # f-string debug variant is a Python3.8 feature 
+        print(f"{self.tf.zeros()=}") # f-string debug version is a Python>=3.8 feature 
         print(f"{self.tf.poles()=}")
         
         # for visualization purposes
@@ -135,10 +135,15 @@ class Tf:
         phase_asymptotes_sloped = self._buildPhaseAsymptotes('sloped')
         phase_asymptotes_vertical = self._buildPhaseAsymptotes('vertical')
 
+    
         plt.figure(figsize=(9,8))
-        plt.suptitle(f"Bode plot: {self.H}")
-
-        ax1 = plt.subplot(311)
+        plt.suptitle("Bode plot of\n" + \
+                     "$\\frac{{{0}}}{{{1}}}$".format(self.tf.num, self.tf.den))
+        
+        MAJOR_PLOT_ROW_SPAN = 10
+        ax1 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
+            loc=(0, 0), 
+            rowspan=MAJOR_PLOT_ROW_SPAN)
         plt.semilogx(w, H_db, 
             color="blue", 
             linestyle="dashed",
@@ -149,19 +154,36 @@ class Tf:
             linestyle="solid",
             linewidth=LINEWIDTH_ASYMP_PLOT)
         plt.xlim(float(self._min_omega), float(self._max_omega))
+        ax1.set_xticks([])
         plt.ylabel("Magnitude (dB)")
         plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
 
-        ax2 = plt.subplot(312, sharex=ax1)
-        plt.scatter(list(map( abs, self.tf.zeros())), [0]*len(self.tf.zeros()), marker='o', facecolors="none", color="red")
-        plt.scatter(list(map( abs, self.tf.poles())), [0]*len(self.tf.poles()), marker='x', color="red")
+        ax2 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
+            loc=(MAJOR_PLOT_ROW_SPAN, 0), 
+            rowspan=1, 
+            sharex=ax1)
+        plt.scatter(
+            list(map( abs, self.tf.zeros())),
+            [0]*len(self.tf.zeros()),
+            marker='o',
+            facecolors="none", 
+            color="red")
+        plt.scatter(
+            list(map( abs, self.tf.poles())),
+            [0]*len(self.tf.poles()),
+            marker='x',
+            color="red")
         plt.setp(ax1.get_xticklabels(), visible=True)
         plt.ylim(-5,5)
         # plt.axes.get_xaxis().set_visible(False)  # remove the x-axis and its ticks
         ax2.yaxis.set_visible(False)
+        ax2.xaxis.set_visible(False)
         # ax2.set_aspect(.2)
 
-        ax3 = plt.subplot(313)
+        ax3 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
+            loc=(MAJOR_PLOT_ROW_SPAN+1, 0), 
+            rowspan=MAJOR_PLOT_ROW_SPAN, 
+            sharex=ax1)
         plt.semilogx(w, H_phase, 
             color="blue", 
             linestyle="dashed",
