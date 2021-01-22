@@ -138,7 +138,9 @@ class Tf:
     
         plt.figure(figsize=(9,8))
         plt.suptitle("Bode plot of\n" + \
-                     "$\\frac{{{0}}}{{{1}}}$".format(self.tf.num, self.tf.den))
+                     "$\\frac{{{0}}}{{{1}}}$".format(
+                                                str(self.tf.num).replace('**', '^'),
+                                                str(self.tf.den).replace('**', '^')))
         
         MAJOR_PLOT_ROW_SPAN = 10
         ax1 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
