@@ -1,18 +1,15 @@
-import sympy
-from sympy.abc import s
-from sympy.physics.control.lti import TransferFunction
-import bodas
+"""
+Fri Jan 22 2021 03:12:59 pm CET
 
+"""
+import bodas
 import multiprocessing
 
 def proc_func(H):
     # print(H)
-    tf = bodas.Tf(TransferFunction(*sympy.fraction(H), s))
-    tf.plot()
-
+    bodas.plot(H)
 
 def main():
-
     some_transfer_functions = [
         ' 100 * (1+s/100)*(1+s/5533) / (s * (1+s) * (1+s/823) * (1+s/9822) ) ',
         '1/(1+s*0.5/1000+s**2/1000**2)',
