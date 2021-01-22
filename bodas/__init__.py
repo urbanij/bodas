@@ -30,6 +30,10 @@ import matplotlib.pyplot as plt
 
 from typing import List
 
+__title__ = 'bodas'
+__version__ = '0.0.1'
+__author__ = u'Francesco Urbani'
+
 
 DEBUG = False
 
@@ -164,6 +168,7 @@ class Tf:
             linewidth=LINEWIDTH_ASYMP_PLOT)
         plt.xlim(float(self._min_omega), float(self._max_omega))
         ax1.set_xticks([])
+        # plt.ylim()
         plt.ylabel("Magnitude (dB)")
         plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
 

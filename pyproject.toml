@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "bodas"
+version = "0.0.1"
+description = "Asymptotic Bode Plot in Python"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/urbanij/bodas"
+repository = "https://github.com/urbanij/bodas"
+documentation = "https://github.com/urbanij/bodas"
+keywords = ["bode", "bode diagram", "bode plot"]
+authors = ["Francesco Urbani <francescourbanidue@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.19.5"
+matplotlib = "^3.3.3"
+sympy = "^1.7.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
