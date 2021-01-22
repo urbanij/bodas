@@ -21,8 +21,6 @@ Basic usage:
 :license: see LICENSE for more details.
 """
 
-
-
 import sympy
 from sympy.abc import s
 from sympy.physics.control.lti import TransferFunction
@@ -31,6 +29,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from typing import List
+
+
+DEBUG = False
 
 NUM_POINTS = 3000
 w = np.logspace(-3, 8, NUM_POINTS)
@@ -42,13 +43,16 @@ class Tf:
         self.tf: TransferFunction = tf
         self.H: str = tf.num / tf.den
         self.H_tf = sympy.lambdify(s, self.H, "numpy")
-        print(f"{self.tf.zeros()=}") # f-string debug version is a Python>=3.8 feature 
-        print(f"{self.tf.poles()=}")
+        if DEBUG:
+            print(f"{self.tf.zeros()=}") # f-string debug version is a Python>=3.8 feature 
+            print(f"{self.tf.poles()=}")
         
         # for visualization purposes
         self._abs_roots: List[sympy.core.numbers.Float] = list(map( abs, self.tf.zeros() + self.tf.poles() ))
         self._min_omega: sympy.core.numbers.Float       = max(w[0],  min(self._abs_roots)/100)
-        self._max_omega: sympy.core.numbers.Float       = min(w[-1], max(self._abs_roots)*100)
+        self._max_omega: sympy.core.numbers.Float       = min(w[-1], max(self._abs_roots)*100) if \
+                                                          min(w[-1], max(self._abs_roots)*100) > self._min_omega else w[-1] 
+                                                            # otherwise in 1/s self._max_omega would be 0 (greater than self._min_omega)
 
     def _addSingularityContributionMagPlot(self, omega, singularity_type) -> np.ndarray:
         """
@@ -114,7 +118,7 @@ class Tf:
         
         # add shitf correction here
         init_angle = np.angle(self.H_tf(1j * w), deg=True)[0] # starting angle of the actual bode plot function.
-        print(f"{init_angle=}")
+        # print(f"{init_angle=}")
 
         f += 0 #init_angle
         
@@ -135,12 +139,15 @@ class Tf:
         phase_asymptotes_sloped = self._buildPhaseAsymptotes('sloped')
         phase_asymptotes_vertical = self._buildPhaseAsymptotes('vertical')
 
+        # breakpoint()
     
-        plt.figure(figsize=(9,8))
+        fig = plt.figure(figsize=(9,8))
+        # fig.canvas.set_window_title(f"bodas @ {self.H}")
+        fig.canvas.set_window_title("github.com/urbanij/bodas")
         plt.suptitle("Bode plot of\n" + \
                      "$\\frac{{{0}}}{{{1}}}$".format(
-                                                str(self.tf.num).replace('**', '^'),
-                                                str(self.tf.den).replace('**', '^')))
+                                                str(self.tf.num).replace('**', '^').replace('*','⋅'),
+                                                str(self.tf.den).replace('**', '^').replace('*','⋅')))
         
         MAJOR_PLOT_ROW_SPAN = 10
         ax1 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
@@ -209,9 +216,17 @@ class Tf:
         plt.show()
 
 
+def plot(H: str):
+    """
+    """
+    tf = Tf(TransferFunction(*sympy.fraction(H), s))
+    tf.plot()
+
+
+"""
 if __name__ == '__main__':
     H = '((1+s/892) * (1-s/12.4))/((231+s))'
     tf = Tf(TransferFunction(*sympy.fraction(H), s))
     tf.plot()
-
+"""
 

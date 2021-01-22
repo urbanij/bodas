@@ -1,7 +1,6 @@
 ## bodas
 
-[![Downloads](https://pepy.tech/badge/bodas)](https://pepy.tech/project/bodas)
-
+![](https://github.com/urbanij/bodas/blob/main/docs/example1.png?raw=true)
 
 ### Installation
 `pip install bodas`
@@ -11,6 +10,3 @@
 ```python
 
 ```
-
-
-![](https://github.com/urbanij/bodas/blob/main/docs/example1.png?raw=true)

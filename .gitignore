@@ -75,3 +75,5 @@ docs/_build
 
 aux/*.html
 aux
+
+Pipfile
