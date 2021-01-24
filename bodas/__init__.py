@@ -35,7 +35,9 @@ __version__ = '0.0.2'
 __author__ = u'Francesco Urbani'
 
 
-DEBUG = False
+DEBUG = False                           # plot debug messages here and there
+UNWRAP_ANGLE = True                     # unwrap angle to obtain continuous phase
+
 
 NUM_POINTS = 3000
 w = np.logspace(-3, 8, NUM_POINTS)
@@ -136,8 +138,14 @@ class Tf:
         LINEWIDTH_ACTUAL_PLOT, LINEWIDTH_ASYMP_PLOT = 0.6, 0.8
         
         H = self.H_tf(1j * w)
+        
+        # magnitude plot
         H_db = 20 * np.log10(np.abs(H))
+        
+        # phase plot
         H_phase = np.angle(H, deg=True)
+        if UNWRAP_ANGLE:
+            H_phase = np.unwrap(2 * H_phase) / 2  # https://stackoverflow.com/a/52294869/6164816
         
         mag_asymptotes = self._buildMagnitudeAsymptotes()
         phase_asymptotes_sloped = self._buildPhaseAsymptotes('sloped')
