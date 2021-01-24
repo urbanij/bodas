@@ -11,7 +11,7 @@
 Bodas library
 ~~~~~~~~~~~~~~~~~~~~~
 
-Bodas is a library written in Python, sitting on top of Sympy, for asymptotic Bode plots.
+Bodas is a library written in Python, sitting on top of SymPy, for asymptotic Bode plots.
 Basic usage:
 
    >>> import bodas
@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 from typing import List
 
 __title__ = 'bodas'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__ = u'Francesco Urbani'
 
 
@@ -146,7 +146,6 @@ class Tf:
         # breakpoint()
     
         fig = plt.figure(figsize=(9,8))
-        # fig.canvas.set_window_title(f"bodas @ {self.H}")
         fig.canvas.set_window_title("github.com/urbanij/bodas")
         plt.suptitle("Bode plot of\n" + \
                      "$\\frac{{{0}}}{{{1}}}$".format(
@@ -161,16 +160,17 @@ class Tf:
             color="blue", 
             linestyle="dashed",
             linewidth=LINEWIDTH_ACTUAL_PLOT, 
-            label=f'${self.H}$')
+            label='actual')
         plt.semilogx(w, mag_asymptotes, 
             color="red", 
             linestyle="solid",
-            linewidth=LINEWIDTH_ASYMP_PLOT)
-        plt.xlim(float(self._min_omega), float(self._max_omega))
+            linewidth=LINEWIDTH_ASYMP_PLOT,
+            label='asymptotic')
         ax1.set_xticks([])
         # plt.ylim()
         plt.ylabel("Magnitude (dB)")
         plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
+        plt.legend()
 
         ax2 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
             loc=(MAJOR_PLOT_ROW_SPAN, 0), 
@@ -202,36 +202,37 @@ class Tf:
             color="blue", 
             linestyle="dashed",
             linewidth=LINEWIDTH_ACTUAL_PLOT, 
-            label=f'${self.H}$')
+            label='actual')
         plt.semilogx(w, phase_asymptotes_sloped, 
             color="red", 
             linestyle="solid",
             linewidth=LINEWIDTH_ASYMP_PLOT, 
-            label=f'${self.H}$')
+            label='asymptotic')
         plt.semilogx(w, phase_asymptotes_vertical, 
             color="red", 
             linestyle=":",
             linewidth=0.88*LINEWIDTH_ASYMP_PLOT)
         
-        plt.xlim(float(self._min_omega), float(self._max_omega))
+        # plt.xlim(float(self._min_omega), float(self._max_omega))
+        plt.xlim(w[0], w[-1])
+
         plt.ylabel("Phase (deg)")
         plt.xlabel("$\omega$ (rad/s)")
         plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
+        plt.legend()
 
         plt.show()
+        # plt.savefig(f"_bodas.png")
 
 
-def plot(H: str):
+def plot(H):
     """
     """
-    tf = Tf(TransferFunction(*sympy.fraction(H), s))
-    tf.plot()
+    if type(H) == str:
+        H_str = H
+    else: # e.g. sympy.core.mul.Mul
+        H_str = str(H)
 
-
-"""
-if __name__ == '__main__':
-    H = '((1+s/892) * (1-s/12.4))/((231+s))'
-    tf = Tf(TransferFunction(*sympy.fraction(H), s))
+    tf = Tf(TransferFunction(*sympy.fraction( H_str ), s))
     tf.plot()
-"""
 

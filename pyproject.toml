@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bodas"
-version = "0.0.1"
+version = "0.0.2"
 description = "Asymptotic Bode Plot in Python"
 license = "MIT"
 readme = "README.md"

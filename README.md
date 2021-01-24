@@ -1,4 +1,5 @@
 ## bodas
+[![Downloads](https://pepy.tech/badge/bodas)](https://pepy.tech/project/bodas)
 
 Asymptotic Bode plots in Python.
 
@@ -8,17 +9,29 @@ Asymptotic Bode plots in Python.
 `pip install bodas`
 
 
-### Basic usage
+### Simple usage example
 ```python
-import bodas 
-import sympy            # import [SymPy](https://www.sympy.org) the Python 
-                        # library for symbolic mathematics
+In [1]: import bodas 
 
-s = sympy.Symbol('s')   # define `s` as symbol
+In [2]: import sympy                # import [SymPy](https://www.sympy.org) the Python 
+                                    # library for symbolic mathematics
 
-H = 1/(1 + s/120)       # assign to `H` the function you want to plot
+In [3]: s = sympy.Symbol('s')       # define `s` as symbol
 
-bodas.plot( str(H) )    # call the `plot` function defined in the bodas library
+In [4]: H = (1+s/23)/(1+s/123)**2   # assign to `H` the function you want to plot
+
+In [5]: sympy.pretty_print(H)
+  s
+  ── + 1
+  23
+──────────
+         2
+⎛ s     ⎞
+⎜─── + 1⎟
+⎝123    ⎠
+
+
+In [6]: bodas.plot(H)               # call the `plot` function defined in the bodas library
 ```
 
 ---
