@@ -83,7 +83,9 @@ class Tf:
         f = 0 * w
 
         # constant
-        f += 20 * np.log10( float( self._calcLastNonZeroCoefficient(self.tf.num) / self._calcLastNonZeroCoefficient(self.tf.den) ) )
+        f += 20 * np.log10(float(abs(self._calcLastNonZeroCoefficient(self.tf.num) / 
+                                     self._calcLastNonZeroCoefficient(self.tf.den) ) 
+                                ))
 
         # zeros and poles
         for root in self.tf.zeros(): f += self._addSingularityContributionMagPlot(float(abs(root)), 'zero')
@@ -98,7 +100,10 @@ class Tf:
         init_angle = np.angle(self.H_tf(1j * w), deg=True)[0] # starting angle of the actual bode plot function.
         # print(f"{init_angle=}")
 
-        f += 0 #init_angle
+        f += np.angle(
+                float(self._calcLastNonZeroCoefficient(self.tf.num) / 
+                      self._calcLastNonZeroCoefficient(self.tf.den) ), 
+                deg=True)
         
         for root in self.tf.zeros(): f += self._addSingularityContributionPhasePlot(complex(root), 'zero', style)
         for root in self.tf.poles(): f += self._addSingularityContributionPhasePlot(complex(root), 'pole', style)
