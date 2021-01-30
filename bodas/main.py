@@ -111,7 +111,7 @@ class Tf:
         for root in self.tf.poles(): f += self._addSingularityContributionPhasePlot(complex(root), 'pole', style)
         return f
     
-    def plot(self):
+    def plot(self, show_actual_plot=True):
         """
         """
         LINEWIDTH_ACTUAL_PLOT, LINEWIDTH_ASYMP_PLOT = 0.6, 0.8
@@ -143,11 +143,12 @@ class Tf:
         ax1 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
             loc=(0, 0), 
             rowspan=MAJOR_PLOT_ROW_SPAN)
-        plt.semilogx(w, H_db, 
-            color="blue", 
-            linestyle="dashed",
-            linewidth=LINEWIDTH_ACTUAL_PLOT, 
-            label='actual')
+        if show_actual_plot:
+            plt.semilogx(w, H_db, 
+                color="blue", 
+                linestyle="dashed",
+                linewidth=LINEWIDTH_ACTUAL_PLOT, 
+                label='actual')
         plt.semilogx(w, mag_asymptotes, 
             color="red", 
             linestyle="solid",
@@ -187,11 +188,12 @@ class Tf:
             loc=(MAJOR_PLOT_ROW_SPAN+1, 0), 
             rowspan=MAJOR_PLOT_ROW_SPAN, 
             sharex=ax1)
-        plt.semilogx(w, H_phase, 
-            color="blue", 
-            linestyle="dashed",
-            linewidth=LINEWIDTH_ACTUAL_PLOT, 
-            label='actual')
+        if show_actual_plot:
+            plt.semilogx(w, H_phase, 
+                color="blue", 
+                linestyle="dashed",
+                linewidth=LINEWIDTH_ACTUAL_PLOT, 
+                label='actual')
         plt.semilogx(w, phase_asymptotes_sloped, 
             color="red", 
             linestyle="solid",
@@ -214,7 +216,7 @@ class Tf:
         # plt.savefig(f"_bodas.png")
 
 
-def plot(H):
+def plot(H, show_actual_plot=True):
     """
     """
     if type(H) == str:
@@ -223,5 +225,5 @@ def plot(H):
         H_str = str(H)
 
     tf = Tf(TransferFunction(*sympy.fraction( H_str ), s))
-    tf.plot()
+    tf.plot(show_actual_plot)
 
