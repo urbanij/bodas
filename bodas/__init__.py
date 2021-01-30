@@ -25,3 +25,4 @@ __title__ = 'bodas'
 __version__ = '0.0.3'
 __author__ = u'Francesco Urbani'
 
+from .main import plot

@@ -1,5 +1,7 @@
-DEBUG = False                           # plot debug messages here and there
-UNWRAP_ANGLE = True                     # unwrap angle to obtain continuous phase
+DEBUG = False           # plot debug messages here and there
+UNWRAP_ANGLE = False    # unwrap angle to obtain continuous phase
+                        # when set to `True` plots with complex conjugate roots come with the wrong phase..
+
 
 
 import sympy
@@ -151,7 +153,7 @@ class Tf:
             linestyle="solid",
             linewidth=LINEWIDTH_ASYMP_PLOT,
             label='asymptotic')
-        ax1.xaxis.set_visible(False)
+        # ax1.xaxis.set_visible(False)
         ax1.set_xticks([])
         # plt.ylim()
         plt.ylabel("Magnitude (dB)")
@@ -178,7 +180,7 @@ class Tf:
         # plt.axes.get_xaxis().set_visible(False)  # remove the x-axis and its ticks
         ax2.yaxis.set_visible(False)
         ax2.xaxis.set_visible(False)
-        ax2.set_xticks([])
+        # ax2.set_xticks([])
         # ax2.set_aspect(.2)
 
         ax3 = plt.subplot2grid(shape=(MAJOR_PLOT_ROW_SPAN*2 + 1, 1), 
