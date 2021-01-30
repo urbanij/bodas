@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+"""
+
 DEBUG = False           # plot debug messages here and there
 UNWRAP_ANGLE = False    # unwrap angle to obtain continuous phase
                         # when set to `True` plots with complex conjugate roots come with the wrong phase..

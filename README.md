@@ -3,7 +3,7 @@
 
 Asymptotic Bode plots in Python.
 
-![](https://github.com/urbanij/bodas/blob/main/docs/example1.png?raw=true)
+![](https://github.com/urbanij/bodas/blob/main/docs/example2.png?raw=true)
 
 ### Installation
 `pip install bodas`
