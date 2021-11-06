@@ -220,7 +220,7 @@ class Tf:
             plt.show()
         else:
             if savefig == 'png' or savefig == 'svg':
-                plt.savefig(f"bodas{time.time()}.{savefig}", format=f'{savefig}')
+                plt.savefig(f"bodas_plot.{savefig}", format=f'{savefig}')
             else:
                 print("Unsupported format, use 'png' or 'svg'.")
 
