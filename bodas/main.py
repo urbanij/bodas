@@ -7,7 +7,7 @@ UNWRAP_ANGLE = False    # unwrap angle to obtain continuous phase
                         # when set to `True` plots with complex conjugate roots come with the wrong phase..
 
 
-
+import time
 import sympy
 from sympy.abc import s
 from sympy.physics.control.lti import TransferFunction
@@ -115,7 +115,7 @@ class Tf:
         for root in self.tf.poles(): f += self._addSingularityContributionPhasePlot(complex(root), 'pole', style)
         return f
     
-    def plot(self, show_actual_plot=True):
+    def plot(self, show_actual_plot=True, savefig=None):
         """
         """
         LINEWIDTH_ACTUAL_PLOT, LINEWIDTH_ASYMP_PLOT = 0.6, 0.8
@@ -216,11 +216,17 @@ class Tf:
         plt.grid(True, which='both', color='#786E74', linestyle='-.', linewidth=0.18)
         plt.legend()
 
-        plt.show()
-        # plt.savefig(f"_bodas.png")
+        if savefig == None:
+            plt.show()
+        else:
+            if savefig == 'png' or savefig == 'svg':
+                plt.savefig(f"bodas{time.time()}.{savefig}", format=f'{savefig}')
+            else:
+                print("Unsupported format, use 'png' or 'svg'.")
 
 
-def plot(H, show_actual_plot=True):
+
+def plot(H, show_actual_plot=True, savefig=None):
     """
     """
     if type(H) == str:
@@ -229,8 +235,6 @@ def plot(H, show_actual_plot=True):
         H_str = str(H)
 
     tf = Tf(TransferFunction(*sympy.fraction( H_str ), s))
-    tf.plot(show_actual_plot)
 
+    tf.plot(show_actual_plot, savefig)
 
-# def savefig(H):
-#     
