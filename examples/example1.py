@@ -7,7 +7,7 @@ import multiprocessing
 
 def proc_func(H):
     # print(H)
-    bodas.plot(H)
+    bodas.plot(H, show_actual_plot=True)
 
 def main():
     some_transfer_functions = [

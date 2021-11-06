@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "bodas"
 version = "0.0.4"
-description = "Asymptotic Bode Plot in Python"
+description = "Asymptotic Bode Plots in Python"
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/urbanij/bodas"
