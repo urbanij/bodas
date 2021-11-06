@@ -1,0 +1,7 @@
+# for binder
+name: python 3.8
+dependencies:
+  - python=3.8
+  - numpy
+  - matplotlib
+  - sympy
