@@ -1,4 +1,4 @@
-## bodas
+# bodas
 [![Downloads](https://pepy.tech/badge/bodas)](https://pepy.tech/project/bodas)
 
 Asymptotic Bode plots in Python.
@@ -10,6 +10,8 @@ Asymptotic Bode plots in Python.
 
 
 ### Simple usage example
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/urbanij/bodas/HEAD?labpath=examples%2Fbasic.ipynb)
+
 ```python
 In [1]: import bodas 
 
@@ -34,7 +36,7 @@ In [5]: sympy.pretty_print(H)
 In [6]: bodas.plot(H)               # call the `plot` function defined in the bodas library
 ```
 
----
 
-### Todo
-See [TODO.md](https://github.com/urbanij/bodas/blob/main/TODO.md)
+
+<!-- ### Todo
+See [TODO.md](https://github.com/urbanij/bodas/blob/main/TODO.md) -->

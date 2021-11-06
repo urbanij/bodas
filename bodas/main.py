@@ -231,3 +231,6 @@ def plot(H, show_actual_plot=True):
     tf = Tf(TransferFunction(*sympy.fraction( H_str ), s))
     tf.plot(show_actual_plot)
 
+
+# def savefig(H):
+#     
