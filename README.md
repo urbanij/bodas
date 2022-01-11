@@ -5,11 +5,13 @@ Asymptotic Bode plots in Python.
 
 ![](https://github.com/urbanij/bodas/blob/main/docs/example2.png?raw=true)
 
-### Installation
-`pip install bodas`
+## Installation
+```sh
+pip install bodas
+```
 
 
-### Simple usage example
+## Simple usage example
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/urbanij/bodas/HEAD?labpath=examples%2Fbasic.ipynb)
 
 ```python
@@ -40,3 +42,7 @@ In [6]: bodas.plot(H)               # call the `plot` function defined in the bo
 
 <!-- ### Todo
 See [TODO.md](https://github.com/urbanij/bodas/blob/main/TODO.md) -->
+
+## Contributing
+
+Yes, please. A good place to start is checking out the [open issues](https://github.com/urbanij/bodas/issues).
